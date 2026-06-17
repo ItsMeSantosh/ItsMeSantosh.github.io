@@ -3,7 +3,8 @@ Blueprint | THM
 
 STEP I: Start the machine and scan all ports and running services
 
-└─$ `nmap -p- -Pn -sV -sC 10.49.156.161`       
+└─$ `nmap -p- -Pn -sV -sC 10.49.156.161`    
+```bash
 Starting Nmap 7.98 ( https://nmap.org ) at 2026-04-21 03:44 -0400
 Nmap scan report for 10.49.156.161
 Host is up (0.072s latency).
@@ -75,6 +76,7 @@ Host script results:
 |   date: 2026-04-21T07:47:06
 |_  start_date: 2026-04-21T07:20:55
 |_nbstat: NetBIOS name: BLUEPRINT, NetBIOS user: <unknown>, NetBIOS MAC: 0a:d5:71:b9:93:ff (unknown)
+```
 
 STEP II: From the scan report we got many open ports and in port 8080/tcp a filename with its version and also paste it into the url then we also got the same name directory
 Perform some more enumeration on the directory and get details.
