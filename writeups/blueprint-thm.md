@@ -3,7 +3,7 @@ Blueprint | THM
 
 STEP I: Start the machine and scan all ports and running services
 
-└─$ nmap -p- -Pn -sV -sC 10.49.156.161       
+└─$ `nmap -p- -Pn -sV -sC 10.49.156.161`       
 Starting Nmap 7.98 ( https://nmap.org ) at 2026-04-21 03:44 -0400
 Nmap scan report for 10.49.156.161
 Host is up (0.072s latency).
