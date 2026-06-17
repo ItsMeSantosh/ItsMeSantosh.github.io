@@ -1,4 +1,5 @@
 Blueprint | THM
+![Blueprint](../images/blueprint.png)
 
 STEP I: Start the machine and scan all ports and running services
 
