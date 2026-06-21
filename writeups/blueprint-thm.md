@@ -79,7 +79,7 @@ Host script results:
 ```
 
 STEP II: From the scan report we got many open ports and in port 8080/tcp a filename with its version and also paste it into the url then we also got the same name directory
-![Blueprint](../images/BluePrint_THM/blueprint.png)
+![Blueprint](../images/BluePrint_THM/oscommerce.webp)
 
 Perform some more enumeration on the directory and get details.
 
